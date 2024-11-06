@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
 
@@ -38,10 +37,4 @@ double iterative_opt_pow(double x, long y) {
 
         return is_negative ? 1 / ans : ans;
     }
-}
-
-int main() {
-    double ans = iterative_opt_pow(3, 24);
-
-    printf("%lf\n", ans);
 }
