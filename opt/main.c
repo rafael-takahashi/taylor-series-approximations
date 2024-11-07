@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include "ex.h"
 #include "elementary.h"
 #include "pow.h"
 
@@ -8,12 +9,9 @@
 #endif
 
 int main() {
-    double ans = sen(M_PI / 4);
-    printf("sen: %lf\n", ans);
-    
-    ans = sin(M_PI / 4);
-    printf("sin: %lf\n", ans);
+    double x = 5.5;
+    double y = ex(x);
+    double error = fabs(y - exp(x));
 
-    ans = iterative_opt_pow(2.0, 10.0);
-    printf("pow: %lf\n", ans);
+    printf("Error: %lf\n", error);
 }
