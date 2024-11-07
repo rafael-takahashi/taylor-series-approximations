@@ -4,12 +4,10 @@
 #include "elementary.h"
 #include "pow.h"
 
-#ifndef M_PI
-    #define M_PI 3.14159265358979323846
-#endif
-
 int main() {
-    double x = 5.5;
+    double x;
+    printf("Valor de x: ");
+    scanf("%lf", &x);
     double y = ex(x);
     double error = fabs(y - exp(x));
 
