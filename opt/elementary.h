@@ -9,6 +9,6 @@ double _cos(double x);
 
 double ex(double x);
 
-double sqrt(double a);
+double _sqrt(double a);
 
 #endif

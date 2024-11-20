@@ -49,6 +49,18 @@ double ex(double x) {
     return horner(E_ARR, x, E_N);
 }
 
-double sqrt(double a) {
-    return a;
+double _sqrt(double a) {
+    static const double SQRT_A = 0.5;           // 1/2
+    static const double SQRT_B = -0.125;        // -1/8
+    static const double SQRT_C = 0.0625;        // 1/16
+    static const double SQRT_D = -0.0390625;    // -5/128
+    static const double SQRT_E = 0.02734375;    // 7/256
+    static const double SQRT_F = -0.0205078125;  // -21/1024
+    
+    static const double SQRT_ARR[] = {1.0, SQRT_A, SQRT_B, SQRT_C, SQRT_D, SQRT_E, SQRT_F};
+    static const int SQRT_N = sizeof(SQRT_ARR) / sizeof(SQRT_ARR[0]);
+
+    double x = a - 1;
+
+    return horner(SQRT_ARR, x, SQRT_N);   
 }
