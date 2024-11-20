@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <math.h>
+#include "pow.h"
 
 double iterative_opt_pow(double x, long y) {
     if (x == 0 && y <= 0) return NAN;
@@ -7,14 +8,14 @@ double iterative_opt_pow(double x, long y) {
     else if (x != 0 && y == 0) return 1;
     else if (y == 1) return x;
     else {
-        bool is_negative;
+        bool is_negative = false;
 
         if (y < 0) {
             y = -y;
             is_negative = true;
         }
 
-        double ans = 1;
+        double res = 1;
 
         /* 
             Exponentation by Squaring Algorithm : https://www.youtube.com/watch?app=desktop&v=bRMVU3Gy_JY.
@@ -27,14 +28,14 @@ double iterative_opt_pow(double x, long y) {
             current bit is 1. If it is, then consider current base in the final answer.
         */
         while (y > 1) {
-            if (y & 1)
-                ans *= x;
+            if (y & 1) {
+                res *= x;
+            }
             x *= x;
             y >>= 1;
         }
+        res *= x;
 
-        ans *= x;
-
-        return is_negative ? 1 / ans : ans;
+        return is_negative ? 1 / res : res;
     }
 }
