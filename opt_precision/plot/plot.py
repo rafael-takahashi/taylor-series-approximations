@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 x_vals = []
 y_vals = []
 
-with open('data.txt', 'r') as f:
+with open('plot/data.txt', 'r') as f:
     for line in f:
         x, y = map(float, line.split())
         x_vals.append(x)
@@ -13,4 +13,4 @@ plt.plot(x_vals, y_vals)
 plt.xlabel('x')
 plt.ylabel('error')
 plt.title('Error')
-plt.savefig('plot.png')
+plt.savefig('plot/plot.png')

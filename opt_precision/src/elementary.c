@@ -38,7 +38,7 @@ double _cos(double x) {
 }
 
 
-double ex(double x) {
+double e(double x) {
     static const double E_K2 = 0.5; // 1.0 / 2.0
     static const double E_K3 = 0.16666666666666666; // 1.0 / 6.0
     static const double E_K4 = 0.041666666666666664; // 1.0 / 24.0

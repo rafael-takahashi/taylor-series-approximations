@@ -7,7 +7,7 @@ double sen(double x);
 
 double _cos(double x);
 
-double ex(double x);
+double e(double x);
 
 double _sqrt(double a);
 

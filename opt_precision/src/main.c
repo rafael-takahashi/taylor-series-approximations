@@ -9,7 +9,7 @@ int main() {
     printf("x value: ");
     scanf("%lf", &x);
 
-    double res1 = ex(x);
+    double res1 = e(x);
     double res2 = exp(x);
     
     double res1 = sen(M_PI / 2);
@@ -46,7 +46,7 @@ int main() {
     double x, y;
 
     for (x = -10; x <= 10; x += 0.1) {
-        y = fabs(sen(x) - sin(x));
+        y = fabs(e(x) - exp(x));
         fprintf(f, "%lf %lf\n", x, y); 
     }
 
