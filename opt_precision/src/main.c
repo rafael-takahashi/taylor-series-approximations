@@ -46,7 +46,7 @@ int main() {
     double x, y;
 
     for (x = -10; x <= 10; x += 0.1) {
-        y = fabs(e(x) - exp(x));
+        y = fabs(sen(x) - sin(x));
         fprintf(f, "%lf %lf\n", x, y); 
     }
 
