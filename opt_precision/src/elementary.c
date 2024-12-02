@@ -10,12 +10,13 @@ double horner(const double* A, double x, const int n) {
 }
 
 double sen(double x) {    
-    static const double SEN_A = -0.16666666666666666;  // -1.0 / 6.0
-    static const double SEN_B = 0.008333333333333333;  // 1.0 / 120.0
-    static const double SEN_C = -0.0001984126984126984; // -1.0 / 5040.0
-    static const double SEN_D = 0.0000027557319223985893; // 1.0 / 362880.0
+    static const double SEN_A = -0.16666666666666666666666666666667;  // -1.0 / 3!
+    static const double SEN_B = 0.00833333333333333333333333333333;  // 1.0 / 5!
+    static const double SEN_C = -1.984126984126984126984126984127e-4; // -1.0 / 7!
+    static const double SEN_D = 2.7557319223985890652557319223986e-6; // 1.0 / 9!
+    static const double SEN_E = -2.5052108385441718775052108385442e-8; // 1.0 / 11!
     
-    static const double SEN_ARR[] = {1.0, SEN_A, SEN_B, SEN_C, SEN_D};
+    static const double SEN_ARR[] = {1.0, SEN_A, SEN_B, SEN_C, SEN_D, SEN_E};
     static const int SEN_N = sizeof(SEN_ARR) / sizeof(SEN_ARR[0]);
 
     double y = x * x;
@@ -24,12 +25,14 @@ double sen(double x) {
 }
 
 double _cos(double x) {    
-    static const double COS_A = -0.5;  // -1.0 / 2.0
-    static const double COS_B = 0.041666666666666664;  // 1.0 / 24.0
-    static const double COS_C = -0.0013888888888888887; // -1.0 / 720.0
-    static const double COS_D = 0.0000248015873015873;  // 1.0 / 40320.0
+    static const double COS_A = -0.5;  // -1.0 / 2!
+    static const double COS_B = 0.04166666666666666666666666666667;  // 1.0 / 4!
+    static const double COS_C = -0.00138888888888888888888888888889; // -1.0 / 6!
+    static const double COS_D = 2.4801587301587301587301587301587e-5;  // 1.0 / 8!
+    static const double COS_E = -2.7557319223985890652557319223986e-7;  // 1.0 / 10!
+    static const double COS_F = 2.0876756987868098979210090321201e-9;  // 1.0 / 12!
     
-    static const double COS_ARR[] = {1.0, COS_A, COS_B, COS_C, COS_D};
+    static const double COS_ARR[] = {1.0, COS_A, COS_B, COS_C, COS_D, COS_E, COS_F};
     static const int COS_N = sizeof(COS_ARR) / sizeof(COS_ARR[0]);
 
     double y = x * x;
