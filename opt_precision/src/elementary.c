@@ -1,3 +1,5 @@
+#include <stdbool.h>
+#include <math.h>
 #include "elementary.h"
 
 double horner(const double* A, double x, const int n) {
@@ -9,19 +11,44 @@ double horner(const double* A, double x, const int n) {
     return res;
 }
 
+double handle_sen_large_argument(double x) {
+    double abs_x = fabs(x);
+
+    if (M_PI / 4.0 < abs_x && abs_x <= 3.0 * M_PI / 4.0)
+        return cos(abs_x - M_PI / 2.0);
+    else if (3.0 * M_PI / 4.0 < abs_x && abs_x <= M_PI)
+        return sen(M_PI - abs_x);
+    else if (M_PI < abs_x && abs_x <= 5.0 * M_PI / 4)
+        return -cos(abs_x - M_PI);
+    else if (5.0 * M_PI / 4 < abs_x && abs_x <= 7.0 * M_PI / 4)
+        return -cos(abs_x - 5.0 * M_PI / 4.0);
+    else if (7.0 * M_PI / 4 < abs_x && abs_x <= 2.0 * M_PI)
+        return -cos(M_PI - abs_x);
+    else {
+        double reduced_x = abs_x - 2.0 * floor(abs_x / (2.0 * M_PI)) * M_PI; 
+        if (reduced_x > M_PI / 4.0)
+            return handle_sen_large_argument(reduced_x);
+        else return sen(reduced_x);
+    }
+}
+
 double sen(double x) {    
-    static const double SEN_A = -0.16666666666666666666666666666667;  // -1.0 / 3!
-    static const double SEN_B = 0.00833333333333333333333333333333;  // 1.0 / 5!
-    static const double SEN_C = -1.984126984126984126984126984127e-4; // -1.0 / 7!
-    static const double SEN_D = 2.7557319223985890652557319223986e-6; // 1.0 / 9!
-    static const double SEN_E = -2.5052108385441718775052108385442e-8; // 1.0 / 11!
-    
-    static const double SEN_ARR[] = {1.0, SEN_A, SEN_B, SEN_C, SEN_D, SEN_E};
-    static const int SEN_N = sizeof(SEN_ARR) / sizeof(SEN_ARR[0]);
+    if (fabs(x) > M_PI / 4.0) {
+        return handle_sen_large_argument(x);
+    } else {
+        static const double SEN_A = -0.16666666666666666666666666666667;  // -1.0 / 3!
+        static const double SEN_B = 0.00833333333333333333333333333333;  // 1.0 / 5!
+        static const double SEN_C = -1.984126984126984126984126984127e-4; // -1.0 / 7!
+        static const double SEN_D = 2.7557319223985890652557319223986e-6; // 1.0 / 9!
+        static const double SEN_E = -2.5052108385441718775052108385442e-8; // 1.0 / 11!
+        
+        static const double SEN_ARR[] = {1.0, SEN_A, SEN_B, SEN_C, SEN_D, SEN_E};
+        static const int SEN_N = sizeof(SEN_ARR) / sizeof(SEN_ARR[0]);
 
-    double y = x * x;
+        double y = x * x;
 
-    return x * (horner(SEN_ARR, y, SEN_N));
+        return x * (horner(SEN_ARR, y, SEN_N));
+    }
 }
 
 double _cos(double x) {    

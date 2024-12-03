@@ -14,9 +14,9 @@ int main() {
 
     double x, y;
 
-    double max_x = M_PI / 4.0;    
+    double limit = 5.0 * M_PI;    
 
-    for (x = -max_x; x <= max_x; x += 0.1) {
+    for (x = -limit; x <= limit; x += 0.1) {
         y = fabs(sen(x) - sin(x));
         fprintf(f, "%.10lf %.10lf\n", x, y); 
     }
