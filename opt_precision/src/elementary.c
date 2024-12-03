@@ -15,15 +15,15 @@ double handle_sen_large_argument(double x) {
     double abs_x = fabs(x);
 
     if (M_PI / 4.0 < abs_x && abs_x <= 3.0 * M_PI / 4.0)
-        return cos(abs_x - M_PI / 2.0);
+        return _cos(abs_x - M_PI / 2.0);
     else if (3.0 * M_PI / 4.0 < abs_x && abs_x <= M_PI)
         return sen(M_PI - abs_x);
     else if (M_PI < abs_x && abs_x <= 5.0 * M_PI / 4)
-        return -cos(abs_x - M_PI);
+        return -_cos(abs_x - M_PI);
     else if (5.0 * M_PI / 4 < abs_x && abs_x <= 7.0 * M_PI / 4)
-        return -cos(abs_x - 5.0 * M_PI / 4.0);
+        return -_cos(abs_x - 5.0 * M_PI / 4.0);
     else if (7.0 * M_PI / 4 < abs_x && abs_x <= 2.0 * M_PI)
-        return -cos(M_PI - abs_x);
+        return -_cos(2.0 * M_PI - abs_x);
     else {
         double reduced_x = abs_x - 2.0 * floor(abs_x / (2.0 * M_PI)) * M_PI; 
         if (reduced_x > M_PI / 4.0)
@@ -32,10 +32,31 @@ double handle_sen_large_argument(double x) {
     }
 }
 
+double handle_cos_large_argument(double x) {
+    double abs_x = fabs(x);
+
+    if (M_PI / 4.0 < abs_x && abs_x <= 3.0 * M_PI / 4.0)
+        return sen(abs_x - M_PI / 2.0);
+    else if (3.0 * M_PI / 4.0 < abs_x && abs_x <= M_PI)
+        return -_cos(M_PI - abs_x);
+    else if (M_PI < abs_x && abs_x <= 5.0 * M_PI / 4)
+        return -sen(abs_x - M_PI);
+    else if (5.0 * M_PI / 4 < abs_x && abs_x <= 7.0 * M_PI / 4)
+        return -sen(abs_x - 5.0 * M_PI / 4.0);
+    else if (7.0 * M_PI / 4 < abs_x && abs_x <= 2.0 * M_PI)
+        return -sen(2.0 * M_PI - abs_x);
+    else {
+        double reduced_x = abs_x - 2.0 * floor(abs_x / (2.0 * M_PI)) * M_PI; 
+        if (reduced_x > M_PI / 4.0)
+            return handle_cos_large_argument(reduced_x);
+        else return _cos(reduced_x);
+    }
+}
+
 double sen(double x) {    
-    if (fabs(x) > M_PI / 4.0) {
+    if (fabs(x) > M_PI / 4.0)
         return handle_sen_large_argument(x);
-    } else {
+    else {
         static const double SEN_A = -0.16666666666666666666666666666667;  // -1.0 / 3!
         static const double SEN_B = 0.00833333333333333333333333333333;  // 1.0 / 5!
         static const double SEN_C = -1.984126984126984126984126984127e-4; // -1.0 / 7!
@@ -51,20 +72,24 @@ double sen(double x) {
     }
 }
 
-double _cos(double x) {    
-    static const double COS_A = -0.5;  // -1.0 / 2!
-    static const double COS_B = 0.04166666666666666666666666666667;  // 1.0 / 4!
-    static const double COS_C = -0.00138888888888888888888888888889; // -1.0 / 6!
-    static const double COS_D = 2.4801587301587301587301587301587e-5;  // 1.0 / 8!
-    static const double COS_E = -2.7557319223985890652557319223986e-7;  // 1.0 / 10!
-    static const double COS_F = 2.0876756987868098979210090321201e-9;  // 1.0 / 12!
-    
-    static const double COS_ARR[] = {1.0, COS_A, COS_B, COS_C, COS_D, COS_E, COS_F};
-    static const int COS_N = sizeof(COS_ARR) / sizeof(COS_ARR[0]);
+double _cos(double x) {
+    if (fabs(x) > M_PI / 4.0)
+        return handle_cos_large_argument(x);
+    else {    
+        static const double COS_A = -0.5;  // -1.0 / 2!
+        static const double COS_B = 0.04166666666666666666666666666667;  // 1.0 / 4!
+        static const double COS_C = -0.00138888888888888888888888888889; // -1.0 / 6!
+        static const double COS_D = 2.4801587301587301587301587301587e-5;  // 1.0 / 8!
+        static const double COS_E = -2.7557319223985890652557319223986e-7;  // 1.0 / 10!
+        static const double COS_F = 2.0876756987868098979210090321201e-9;  // 1.0 / 12!
+        
+        static const double COS_ARR[] = {1.0, COS_A, COS_B, COS_C, COS_D, COS_E, COS_F};
+        static const int COS_N = sizeof(COS_ARR) / sizeof(COS_ARR[0]);
 
-    double y = x * x;
+        double y = x * x;
 
-    return horner(COS_ARR, y, COS_N);
+        return horner(COS_ARR, y, COS_N);
+    }
 }
 
 
