@@ -5,7 +5,7 @@
 
 int main() {
 
-    FILE *f = fopen("../plot/data.txt", "w");
+    FILE *f = fopen("plot/data.txt", "w");
 
     if (f == NULL) {
         printf("Error opening file.\n");
@@ -18,7 +18,7 @@ int main() {
 
     for (x = -limit; x <= limit; x += 0.1) {
         y = fabs(sen(x) - sin(x));
-        fprintf(f, "%.10lf %.10lf\n", x, y); 
+        fprintf(f, "%.12lf %.12lf\n", x, y);
     }
 
     fclose(f);
