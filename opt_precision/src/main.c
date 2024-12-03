@@ -5,7 +5,7 @@
 
 int main() {
 
-    FILE *f = fopen("plot/data.txt", "w");
+    FILE *f = fopen("../plot/data.txt", "w");
 
     if (f == NULL) {
         printf("Error opening file.\n");
