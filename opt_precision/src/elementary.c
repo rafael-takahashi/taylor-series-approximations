@@ -29,17 +29,16 @@ double handle_sen_large_argument(double x) {
     if (x < 0) 
         x += TWO_PI;
 
-    if (x <= PI_4)
-        return sen(x);
-
     if (PI_4 < x && x <= THREE_PI_4)
         return _cos(x - PI_2);
     else if (THREE_PI_4 < x && x <= FIVE_PI_4)
         return -sen(x - M_PI);
     else if (FIVE_PI_4 < x && x <= SEVEN_PI_4)
         return -_cos(x - THREE_PI_2);
-    else //if (SEVEN_PI_4 < x && x <= TWO_PI)
+    else if (SEVEN_PI_4 < x && x <= TWO_PI)
         return sen(x - TWO_PI);
+    else
+        return sen(x);
 }
 
 double handle_cos_large_argument(double x) {
@@ -57,14 +56,16 @@ double handle_cos_large_argument(double x) {
     if (x < 0) 
         x += TWO_PI;
 
-    if (PI_4 < abs_x && abs_x <= THREE_PI_4)
+    if (PI_4 < x && x <= THREE_PI_4)
         return -sen(x - PI_2);
-    else if (THREE_PI_4 < abs_x && abs_x <= FIVE_PI_4)
+    else if (THREE_PI_4 < x && x <= FIVE_PI_4)
         return -_cos(x - M_PI);
-    else if (FIVE_PI_4 < abs_x && abs_x <= SEVEN_PI_4)
+    else if (FIVE_PI_4 < x && x <= SEVEN_PI_4)
         return sen(x - THREE_PI_2);
-    else //if (SEVEN_PI_4 < abs_x && abs_x <= TWO_PI)
+    else if (SEVEN_PI_4 < x && x <= TWO_PI)
         return _cos(x - TWO_PI);
+    else
+        return _cos(x);
 }
 
 double sen(double x) {    

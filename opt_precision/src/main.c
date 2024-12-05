@@ -14,7 +14,7 @@ int main() {
 
     double x, y;
 
-    double limit = TWO_PI;    
+    double limit = 2.0 * TWO_PI;    
 
     for (x = -limit; x <= limit; x += 0.1) {
         y = fabs(sen(x) - sin(x));
