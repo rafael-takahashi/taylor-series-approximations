@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 #include "elementary.h"
-#include "pow.h"
 
 int main() {
 
@@ -14,10 +13,19 @@ int main() {
 
     double x, y;
 
-    double limit = 5.0 * M_PI;    
+    /*
+    double limit = 2.0 * M_PI;    
 
     for (x = -limit; x <= limit; x += 0.1) {
         y = fabs(sen(x) - sin(x));
+        fprintf(f, "%.15lf %.15lf\n", x, y);
+    }
+    */
+
+    double limit_exponential = 30; 
+    
+    for (x = -limit_exponential; x <= limit_exponential; x += 0.1) {
+        y = fabs(e_with_bailey_reduction(x) - exp(x));
         fprintf(f, "%.12lf %.12lf\n", x, y);
     }
 

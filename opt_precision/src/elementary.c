@@ -1,6 +1,20 @@
+#include "elementary.h"
 #include <stdbool.h>
 #include <math.h>
-#include "elementary.h"
+#include "ieee754.h"
+#include "pow.h"
+
+/*
+pi/4 = 0,78539816339744830961566084581988
+
+3pi/4 = 2,3561944901923449288469825374596
+
+5pi/4 = 3,9269908169872415480783042290994
+
+7pi/4 = 5,4977871437821381673096259207391
+
+2pi = 6,283185307179586476925286766559
+*/
 
 double horner(const double* A, double x, const int n) {
     double res = A[n-1];
@@ -98,7 +112,6 @@ double _cos(double x) {
     }
 }
 
-
 double e(double x) {
     static const double E_K2 = 0.5; // 1.0 / 2.0
     static const double E_K3 = 0.16666666666666666; // 1.0 / 6.0
@@ -109,6 +122,37 @@ double e(double x) {
 
     return horner(E_ARR, x, E_N);
 }
+
+double e_with_bailey_reduction(double x) {
+    static const double E_K2 = 0.5; // 1.0 / 2.0
+    static const double E_K3 = 0.16666666666666666; // 1.0 / 6.0
+    static const double E_K4 = 0.041666666666666664; // 1.0 / 24.0ic 
+    static const double ln2 = 0.69314718055994530942; 
+    static const double ln2_2 = 1.3862943611198906188; // ln2 * 2
+
+    static const double E_ARR[] = {1.0, 1.0, E_K2, E_K3, E_K4};
+    static const int E_N = sizeof(E_ARR) / sizeof(E_ARR[0]);
+    
+    doubleIEEE temp = {x};
+    temp.Dbits.E += 1;
+
+    int n = ceil((temp.x - ln2)/ln2_2);
+    double r = x - n * ln2;
+
+    temp.x = r;
+    temp.Dbits.E -= 8;
+    r = temp.x;
+
+    double result = horner(E_ARR, r, E_N);
+    result = iterative_opt_pow(result, 256);
+
+    temp.x = 2;
+    temp.Dbits.E += n-1; 
+    
+    double multiplier = temp.x;
+
+    return result * multiplier; //da pra ao invés de multiplier usar só o temp.x, mas talvez assim fica mais legível.
+}                               //porém, é um double a mais.
 
 double _sqrt(double a) {
     static const double SQRT_A = 0.5;           // 1/2
