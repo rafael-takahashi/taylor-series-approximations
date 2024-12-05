@@ -16,50 +16,55 @@ double horner(const double* A, double x, const int n) {
 
 double handle_sen_large_argument(double x) {
     double abs_x = fabs(x);
+    bool is_negative = x < 0;
 
-    if (abs_x > TWO_PI) {
-        double abs_reduced_x = abs_x - 2.0 * floor(abs_x / (TWO_PI)) * M_PI;
-        double reduced_x = x < 0 ? -abs_reduced_x : abs_reduced_x;
-        if (abs_reduced_x > PI_4)
-            return handle_sen_large_argument(reduced_x);
-        else return sen(reduced_x);
+    while (abs_x > TWO_PI) {
+        abs_x -= floor(abs_x / TWO_PI) * TWO_PI;
+        if (abs_x <= PI_4)
+            return sen(is_negative ? -abs_x : abs_x);
     }
+
+    x = is_negative ? -abs_x : abs_x;
 
     if (x < 0) 
         x += TWO_PI;
 
-    if (PI_4 < x && x <= 3.0 * PI_4)
-        return _cos(PI_2 - x);
-    else if (3.0 * PI_4 < x && x <= FIVE_PI_4)
-        return sen(M_PI - x);
+    if (x <= PI_4)
+        return sen(x);
+
+    if (PI_4 < x && x <= THREE_PI_4)
+        return _cos(x - PI_2);
+    else if (THREE_PI_4 < x && x <= FIVE_PI_4)
+        return -sen(x - M_PI);
     else if (FIVE_PI_4 < x && x <= SEVEN_PI_4)
-        return -_cos(3.0 * PI_2 - x);
-    else // if (SEVEN_PI_4 < x && x <= TWO_PI)
-        return -sen(TWO_PI - x);
+        return -_cos(x - THREE_PI_2);
+    else //if (SEVEN_PI_4 < x && x <= TWO_PI)
+        return sen(x - TWO_PI);
 }
 
 double handle_cos_large_argument(double x) {
     double abs_x = fabs(x);
+    bool is_negative = x < 0;
 
-    if (abs_x > TWO_PI) {
-        double abs_reduced_x = abs_x - 2.0 * floor(abs_x / (TWO_PI)) * M_PI;
-        double reduced_x = x < 0 ? -abs_reduced_x : abs_reduced_x;
-        if (abs_reduced_x > PI_4)
-            return handle_cos_large_argument(reduced_x);
-        else return _cos(reduced_x);
+    while (abs_x > TWO_PI) {
+        abs_x -= floor(abs_x / TWO_PI) * TWO_PI;
+        if (abs_x <= PI_4)
+            return cos(is_negative ? -abs_x : abs_x);
     }
+
+    x = is_negative ? -abs_x : abs_x;
 
     if (x < 0) 
         x += TWO_PI;
 
-    if (PI_4 < abs_x && abs_x <= 3.0 * PI_4)
-        return sen(PI_2 - x);
-    else if (3.0 * PI_4 < abs_x && abs_x <= FIVE_PI_4)
-        return -_cos(M_PI - x);
+    if (PI_4 < abs_x && abs_x <= THREE_PI_4)
+        return -sen(x - PI_2);
+    else if (THREE_PI_4 < abs_x && abs_x <= FIVE_PI_4)
+        return -_cos(x - M_PI);
     else if (FIVE_PI_4 < abs_x && abs_x <= SEVEN_PI_4)
-        return -sen(3.0 * PI_2 - x);
-    else // if (SEVEN_PI_4 < abs_x && abs_x <= TWO_PI)
-        return _cos(TWO_PI - x);
+        return sen(x - THREE_PI_2);
+    else //if (SEVEN_PI_4 < abs_x && abs_x <= TWO_PI)
+        return _cos(x - TWO_PI);
 }
 
 double sen(double x) {    
