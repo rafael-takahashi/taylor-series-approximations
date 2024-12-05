@@ -1,20 +1,9 @@
 #include "elementary.h"
 #include <stdbool.h>
 #include <math.h>
+#include "definitions.h"
 #include "ieee754.h"
 #include "pow.h"
-
-/*
-pi/4 = 0,78539816339744830961566084581988
-
-3pi/4 = 2,3561944901923449288469825374596
-
-5pi/4 = 3,9269908169872415480783042290994
-
-7pi/4 = 5,4977871437821381673096259207391
-
-2pi = 6,283185307179586476925286766559
-*/
 
 double horner(const double* A, double x, const int n) {
     double res = A[n-1];
@@ -28,53 +17,53 @@ double horner(const double* A, double x, const int n) {
 double handle_sen_large_argument(double x) {
     double abs_x = fabs(x);
 
-    if (abs_x > 2.0 * M_PI) {
-        double abs_reduced_x = abs_x - 2.0 * floor(abs_x / (2.0 * M_PI)) * M_PI;
+    if (abs_x > TWO_PI) {
+        double abs_reduced_x = abs_x - 2.0 * floor(abs_x / (TWO_PI)) * M_PI;
         double reduced_x = x < 0 ? -abs_reduced_x : abs_reduced_x;
-        if (abs_reduced_x > M_PI / 4.0)
+        if (abs_reduced_x > PI_4)
             return handle_sen_large_argument(reduced_x);
         else return sen(reduced_x);
     }
 
     if (x < 0) 
-        x += 2.0 * M_PI;
+        x += TWO_PI;
 
-    if (M_PI / 4.0 < x && x <= 3.0 * M_PI / 4.0)
-        return _cos(M_PI / 2.0 - x);
-    else if (3.0 * M_PI / 4.0 < x && x <= 5.0 * M_PI / 4)
+    if (PI_4 < x && x <= 3.0 * PI_4)
+        return _cos(PI_2 - x);
+    else if (3.0 * PI_4 < x && x <= FIVE_PI_4)
         return sen(M_PI - x);
-    else if (5.0 * M_PI / 4 < x && x <= 7.0 * M_PI / 4)
-        return -_cos(3.0 * M_PI / 2.0 - x);
-    else // if (7.0 * M_PI / 4 < x && x <= 2.0 * M_PI)
-        return -sen(2.0 * M_PI - x);
+    else if (FIVE_PI_4 < x && x <= SEVEN_PI_4)
+        return -_cos(3.0 * PI_2 - x);
+    else // if (SEVEN_PI_4 < x && x <= TWO_PI)
+        return -sen(TWO_PI - x);
 }
 
 double handle_cos_large_argument(double x) {
     double abs_x = fabs(x);
 
-    if (abs_x > 2.0 * M_PI) {
-        double abs_reduced_x = abs_x - 2.0 * floor(abs_x / (2.0 * M_PI)) * M_PI;
+    if (abs_x > TWO_PI) {
+        double abs_reduced_x = abs_x - 2.0 * floor(abs_x / (TWO_PI)) * M_PI;
         double reduced_x = x < 0 ? -abs_reduced_x : abs_reduced_x;
-        if (abs_reduced_x > M_PI / 4.0)
+        if (abs_reduced_x > PI_4)
             return handle_cos_large_argument(reduced_x);
         else return _cos(reduced_x);
     }
 
     if (x < 0) 
-        x += 2.0 * M_PI;
+        x += TWO_PI;
 
-    if (M_PI / 4.0 < abs_x && abs_x <= 3.0 * M_PI / 4.0)
-        return sen(M_PI / 2.0 - x);
-    else if (3.0 * M_PI / 4.0 < abs_x && abs_x <= 5.0 * M_PI / 4)
+    if (PI_4 < abs_x && abs_x <= 3.0 * PI_4)
+        return sen(PI_2 - x);
+    else if (3.0 * PI_4 < abs_x && abs_x <= FIVE_PI_4)
         return -_cos(M_PI - x);
-    else if (5.0 * M_PI / 4 < abs_x && abs_x <= 7.0 * M_PI / 4)
-        return -sen(3.0 * M_PI / 2.0 - x);
-    else // if (7.0 * M_PI / 4 < abs_x && abs_x <= 2.0 * M_PI)
-        return _cos(2.0 * M_PI - x);
+    else if (FIVE_PI_4 < abs_x && abs_x <= SEVEN_PI_4)
+        return -sen(3.0 * PI_2 - x);
+    else // if (SEVEN_PI_4 < abs_x && abs_x <= TWO_PI)
+        return _cos(TWO_PI - x);
 }
 
 double sen(double x) {    
-    if (fabs(x) > M_PI / 4.0)
+    if (fabs(x) > PI_4)
         return handle_sen_large_argument(x);
     else {
         static const double SEN_A = -0.16666666666666666666666666666667;  // -1.0 / 3!
@@ -93,7 +82,7 @@ double sen(double x) {
 }
 
 double _cos(double x) {
-    if (fabs(x) > M_PI / 4.0)
+    if (fabs(x) > PI_4)
         return handle_cos_large_argument(x);
     else {    
         static const double COS_A = -0.5;  // -1.0 / 2!
