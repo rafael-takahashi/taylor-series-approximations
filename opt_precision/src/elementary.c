@@ -141,13 +141,13 @@ double e_with_bailey_reduction(double x) {
     double result = horner(E_ARR, r, E_N);
     result = iterative_opt_pow(result, 256);
 
-    temp.x = 2;
-    temp.Dbits.E += n-1; 
-    
-    double multiplier = temp.x;
+    temp.x = result;
+    temp.Dbits.E += n;
 
-    return result * multiplier; //da pra ao invés de multiplier usar só o temp.x, mas talvez assim fica mais legível.
-}                               //porém, é um double a mais.
+    result = temp.x;
+
+    return result;
+}                               
 
 double _sqrt(double a) {
     static const double SQRT_A = 0.5;           // 1/2
