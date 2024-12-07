@@ -11,6 +11,6 @@ with open('plot/data.txt', 'r') as f:
 
 plt.plot(x_vals, y_vals)
 plt.xlabel('x')
-plt.ylabel('error')
-plt.title('Error')
+plt.ylabel('Erro')
+plt.title('Seno')
 plt.savefig('plot/plot.png')
